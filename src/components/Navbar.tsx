@@ -1,7 +1,14 @@
-import React, { useState } from "react";
-import { Moon, Sun, Laptop } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import {
+  Moon,
+  Sun,
+  Laptop,
+  Heart,
+  LogOut,
+  LayoutDashboard,
+} from "lucide-react";
 import { Button } from "./ui/button";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 interface NavbarProps {
   theme?: "light" | "dark";
@@ -10,10 +17,36 @@ interface NavbarProps {
 
 const Navbar = ({ theme = "light", onThemeToggle = () => {} }: NavbarProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+  const isHomePage = location.pathname === "/";
+
+  // Initialize theme from localStorage or system preference
+  useEffect(() => {
+    // Check if user is logged in
+    const user = localStorage.getItem("user");
+    if (user && JSON.parse(user).isLoggedIn) {
+      setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
+    }
+  }, [location]);
 
   const handleGetStarted = () => {
-    navigate("/recommendation");
+    // Check if user is logged in
+    const user = localStorage.getItem("user");
+    if (user && JSON.parse(user).isLoggedIn) {
+      navigate("/recommendation");
+    } else {
+      navigate("/auth");
+    }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    setIsLoggedIn(false);
+    navigate("/");
   };
 
   const scrollToSection = (sectionId: string) => {
@@ -24,13 +57,21 @@ const Navbar = ({ theme = "light", onThemeToggle = () => {} }: NavbarProps) => {
     setIsMenuOpen(false);
   };
 
+  const navigateTo = (path: string) => {
+    navigate(path);
+    setIsMenuOpen(false);
+  };
+
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-background border-b border-border shadow-sm">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-background border-b border-border shadow-sm dark-transition">
       <div className="container mx-auto px-4 md:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <div className="flex items-center">
-            <Laptop className="h-8 w-8 text-primary mr-2" />
+          <div
+            className="flex items-center cursor-pointer"
+            onClick={() => navigate("/")}
+          >
+            <Laptop className="h-8 w-8 text-apple-blue dark:text-apple-darkBlue mr-2" />
             <span className="text-xl font-semibold text-foreground">
               Laptify
             </span>
@@ -38,36 +79,57 @@ const Navbar = ({ theme = "light", onThemeToggle = () => {} }: NavbarProps) => {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            <button
-              onClick={() => scrollToSection("features")}
-              className="text-muted-foreground hover:text-foreground transition-colors"
-            >
-              Features
-            </button>
-            <button
-              onClick={() => scrollToSection("how-it-works")}
-              className="text-muted-foreground hover:text-foreground transition-colors"
-            >
-              How It Works
-            </button>
-            <button
-              onClick={() => scrollToSection("about-us")}
-              className="text-muted-foreground hover:text-foreground transition-colors"
-            >
-              About Us
-            </button>
-            <button
-              onClick={() => scrollToSection("faqs")}
-              className="text-muted-foreground hover:text-foreground transition-colors"
-            >
-              FAQs
-            </button>
-            <button
-              onClick={() => scrollToSection("contact")}
-              className="text-muted-foreground hover:text-foreground transition-colors"
-            >
-              Contact
-            </button>
+            {isLoggedIn && !isHomePage ? (
+              // Logged in navigation for recommendation and favorites pages
+              <>
+                <button
+                  onClick={() => navigateTo("/recommendation")}
+                  className={`text-muted-foreground hover:text-foreground transition-colors ${location.pathname === "/recommendation" ? "text-foreground font-medium" : ""}`}
+                >
+                  Recommendation
+                </button>
+                <button
+                  onClick={() => navigateTo("/favorites")}
+                  className={`text-muted-foreground hover:text-foreground transition-colors ${location.pathname === "/favorites" ? "text-foreground font-medium" : ""}`}
+                >
+                  Favorites
+                </button>
+              </>
+            ) : isHomePage ? (
+              // Home page navigation
+              <>
+                <button
+                  onClick={() => scrollToSection("features")}
+                  className="text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  Features
+                </button>
+                <button
+                  onClick={() => scrollToSection("how-it-works")}
+                  className="text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  How It Works
+                </button>
+                <button
+                  onClick={() => scrollToSection("about")}
+                  className="text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  About Us
+                </button>
+                <button
+                  onClick={() => scrollToSection("faqs")}
+                  className="text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  FAQs
+                </button>
+                <button
+                  onClick={() => scrollToSection("contact")}
+                  className="text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  Contact
+                </button>
+              </>
+            ) : null}
           </div>
 
           {/* Right side actions */}
@@ -78,21 +140,34 @@ const Navbar = ({ theme = "light", onThemeToggle = () => {} }: NavbarProps) => {
               size="icon"
               onClick={onThemeToggle}
               aria-label="Toggle theme"
+              className="text-foreground hover:bg-secondary/80 dark-transition"
             >
               {theme === "dark" ? (
-                <Sun className="h-5 w-5" />
+                <Sun className="h-5 w-5 text-yellow-400" />
               ) : (
                 <Moon className="h-5 w-5" />
               )}
             </Button>
 
-            {/* Get Started/Login button */}
-            <Button
-              onClick={handleGetStarted}
-              className="bg-primary text-primary-foreground hover:bg-primary/90"
-            >
-              Get Started / Login
-            </Button>
+            {isLoggedIn ? (
+              // Logged in actions
+              <Button
+                variant="outline"
+                onClick={handleLogout}
+                className="flex items-center gap-2 border-apple-blue dark:border-apple-darkBlue text-apple-blue dark:text-apple-darkBlue hover:bg-apple-blue/10 dark:hover:bg-apple-darkBlue/10 dark-transition"
+              >
+                <LogOut className="h-4 w-4" />
+                Logout
+              </Button>
+            ) : (
+              // Not logged in actions
+              <Button
+                onClick={handleGetStarted}
+                className="bg-apple-blue hover:bg-apple-darkBlue text-white dark-transition"
+              >
+                Get Started / Login
+              </Button>
+            )}
           </div>
 
           {/* Mobile menu button */}
@@ -134,36 +209,66 @@ const Navbar = ({ theme = "light", onThemeToggle = () => {} }: NavbarProps) => {
         {/* Mobile menu */}
         {isMenuOpen && (
           <div className="md:hidden py-4 space-y-4 border-t border-border">
-            <button
-              onClick={() => scrollToSection("features")}
-              className="block w-full text-left px-4 py-2 text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
-            >
-              Features
-            </button>
-            <button
-              onClick={() => scrollToSection("how-it-works")}
-              className="block w-full text-left px-4 py-2 text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
-            >
-              How It Works
-            </button>
-            <button
-              onClick={() => scrollToSection("about-us")}
-              className="block w-full text-left px-4 py-2 text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
-            >
-              About Us
-            </button>
-            <button
-              onClick={() => scrollToSection("faqs")}
-              className="block w-full text-left px-4 py-2 text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
-            >
-              FAQs
-            </button>
-            <button
-              onClick={() => scrollToSection("contact")}
-              className="block w-full text-left px-4 py-2 text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
-            >
-              Contact
-            </button>
+            {isLoggedIn && !isHomePage ? (
+              // Logged in mobile navigation
+              <>
+                <button
+                  onClick={() => navigateTo("/recommendation")}
+                  className="block w-full text-left px-4 py-2 text-muted-foreground hover:text-foreground hover:bg-accent transition-colors flex items-center gap-2"
+                >
+                  <LayoutDashboard className="h-4 w-4" />
+                  Recommendation
+                </button>
+                <button
+                  onClick={() => navigateTo("/favorites")}
+                  className="block w-full text-left px-4 py-2 text-muted-foreground hover:text-foreground hover:bg-accent transition-colors flex items-center gap-2"
+                >
+                  <Heart className="h-4 w-4" />
+                  Favorites
+                </button>
+                <button
+                  onClick={handleLogout}
+                  className="block w-full text-left px-4 py-2 text-muted-foreground hover:text-foreground hover:bg-accent transition-colors flex items-center gap-2"
+                >
+                  <LogOut className="h-4 w-4" />
+                  Logout
+                </button>
+              </>
+            ) : isHomePage ? (
+              // Home page mobile navigation
+              <>
+                <button
+                  onClick={() => scrollToSection("features")}
+                  className="block w-full text-left px-4 py-2 text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
+                >
+                  Features
+                </button>
+                <button
+                  onClick={() => scrollToSection("how-it-works")}
+                  className="block w-full text-left px-4 py-2 text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
+                >
+                  How It Works
+                </button>
+                <button
+                  onClick={() => scrollToSection("about")}
+                  className="block w-full text-left px-4 py-2 text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
+                >
+                  About Us
+                </button>
+                <button
+                  onClick={() => scrollToSection("faqs")}
+                  className="block w-full text-left px-4 py-2 text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
+                >
+                  FAQs
+                </button>
+                <button
+                  onClick={() => scrollToSection("contact")}
+                  className="block w-full text-left px-4 py-2 text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
+                >
+                  Contact
+                </button>
+              </>
+            ) : null}
           </div>
         )}
       </div>

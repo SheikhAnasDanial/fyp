@@ -1,6 +1,9 @@
-import { Suspense } from "react";
-import { useRoutes, Routes, Route } from "react-router-dom";
+import { Suspense, useEffect } from "react";
+import { useRoutes, Routes, Route, Navigate } from "react-router-dom";
 import Home from "./components/home";
+import AuthPage from "./pages/AuthPage";
+import RecommendationPage from "./pages/RecommendationPage";
+import FavoritesPage from "./pages/FavoritesPage";
 import routes from "tempo-routes";
 
 function App() {
@@ -9,6 +12,11 @@ function App() {
       <>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/auth" element={<AuthPage />} />
+          <Route path="/recommendation" element={<RecommendationPage />} />
+          <Route path="/favorites" element={<FavoritesPage />} />
+          {/* Add a catch-all route */}
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
         {import.meta.env.VITE_TEMPO === "true" && useRoutes(routes)}
       </>

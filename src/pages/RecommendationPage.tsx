@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Laptop, SlidersHorizontal, Search, Filter, Heart } from "lucide-react";
 import { motion } from "framer-motion";
@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import LaptopCard from "@/components/LaptopCard";
+import Navbar from "@/components/Navbar";
 
 interface PreferenceFormState {
   budget: number;
@@ -51,6 +52,7 @@ const RecommendationPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState("preferences");
   const [searchQuery, setSearchQuery] = useState("");
   const [filterBrand, setFilterBrand] = useState("all");
+  const [theme, setTheme] = useState<"light" | "dark">("light");
 
   // Default preferences
   const [preferences, setPreferences] = useState<PreferenceFormState>({
@@ -186,9 +188,44 @@ const RecommendationPage: React.FC = () => {
     )
     .filter((laptop) => filterBrand === "all" || laptop.brand === filterBrand);
 
+  const toggleTheme = () => {
+    const newTheme = theme === "light" ? "dark" : "light";
+    setTheme(newTheme);
+    // Apply theme to document
+    if (newTheme === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+    // Store theme preference
+    localStorage.setItem("theme", newTheme);
+  };
+
+  // Initialize theme from localStorage or system preference
+  useEffect(() => {
+    // Check for saved theme preference or use system preference
+    const savedTheme = localStorage.getItem("theme");
+    const systemPrefersDark = window.matchMedia(
+      "(prefers-color-scheme: dark)",
+    ).matches;
+
+    if (savedTheme) {
+      setTheme(savedTheme as "light" | "dark");
+      if (savedTheme === "dark") {
+        document.documentElement.classList.add("dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+      }
+    } else if (systemPrefersDark) {
+      setTheme("dark");
+      document.documentElement.classList.add("dark");
+    }
+  }, []);
+
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <div className="container mx-auto px-4 py-8">
+    <div className="min-h-screen bg-background text-foreground dark-transition">
+      <Navbar theme={theme} onThemeToggle={toggleTheme} />
+      <div className="container mx-auto px-4 py-8 pt-24">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -202,14 +239,20 @@ const RecommendationPage: React.FC = () => {
         </motion.div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-2 mb-8">
-            <TabsTrigger value="preferences" className="text-lg py-3">
+          <TabsList className="grid w-full grid-cols-2 mb-8 bg-secondary/50 dark:bg-secondary/30">
+            <TabsTrigger
+              value="preferences"
+              className="text-lg py-3 data-[state=active]:bg-apple-blue data-[state=active]:text-white dark:data-[state=active]:bg-apple-darkBlue"
+            >
               <div className="flex items-center gap-2">
                 <SlidersHorizontal className="h-5 w-5" />
                 <span>Preferences</span>
               </div>
             </TabsTrigger>
-            <TabsTrigger value="results" className="text-lg py-3">
+            <TabsTrigger
+              value="results"
+              className="text-lg py-3 data-[state=active]:bg-apple-blue data-[state=active]:text-white dark:data-[state=active]:bg-apple-darkBlue"
+            >
               <div className="flex items-center gap-2">
                 <Laptop className="h-5 w-5" />
                 <span>Recommendations</span>
@@ -218,7 +261,7 @@ const RecommendationPage: React.FC = () => {
           </TabsList>
 
           <TabsContent value="preferences" className="mt-6">
-            <Card className="border-none shadow-lg">
+            <Card className="border-none shadow-lg dark:shadow-apple-gray-900/20 dark:bg-apple-gray-800">
               <CardContent className="pt-6">
                 <form
                   onSubmit={(e) => {
@@ -432,7 +475,11 @@ const RecommendationPage: React.FC = () => {
                     </div>
 
                     <div className="flex justify-end pt-4">
-                      <Button type="submit" size="lg" className="px-8">
+                      <Button
+                        type="submit"
+                        size="lg"
+                        className="px-8 bg-apple-blue hover:bg-apple-darkBlue text-white dark-transition"
+                      >
                         Get Recommendations
                       </Button>
                     </div>
@@ -459,13 +506,13 @@ const RecommendationPage: React.FC = () => {
               <div className="flex gap-4 w-full md:w-auto">
                 <div className="flex-1 md:flex-none">
                   <Select value={filterBrand} onValueChange={setFilterBrand}>
-                    <SelectTrigger className="w-full md:w-[180px]">
+                    <SelectTrigger className="w-full md:w-[180px] dark:border-apple-gray-600">
                       <div className="flex items-center gap-2">
                         <Filter className="h-4 w-4" />
                         <SelectValue placeholder="Filter by brand" />
                       </div>
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="dark:bg-apple-gray-800 dark:border-apple-gray-700">
                       <SelectItem value="all">All Brands</SelectItem>
                       <SelectItem value="Apple">Apple</SelectItem>
                       <SelectItem value="Dell">Dell</SelectItem>
@@ -480,7 +527,7 @@ const RecommendationPage: React.FC = () => {
                 <Button
                   variant="outline"
                   onClick={handleGoToFavorites}
-                  className="flex-1 md:flex-none"
+                  className="flex-1 md:flex-none border-apple-blue dark:border-apple-darkBlue text-apple-blue dark:text-apple-darkBlue hover:bg-apple-blue/10 dark:hover:bg-apple-darkBlue/10 dark-transition"
                 >
                   <Heart className="h-4 w-4 mr-2" />
                   Favorites
@@ -513,9 +560,17 @@ const RecommendationPage: React.FC = () => {
                     transition={{ duration: 0.3 }}
                   >
                     <LaptopCard
-                      laptop={laptop}
-                      onAddToFavorites={() => handleAddToFavorites(laptop.id)}
-                      onViewDetails={() => handleViewDetails(laptop.id)}
+                      id={laptop.id}
+                      name={laptop.name}
+                      image={laptop.image}
+                      processor={laptop.processor}
+                      ram={laptop.ram}
+                      storage={laptop.storage}
+                      display={laptop.display}
+                      price={laptop.price}
+                      rating={laptop.rating}
+                      onAddToFavorites={handleAddToFavorites}
+                      onViewDetails={handleViewDetails}
                     />
                   </motion.div>
                 ))}

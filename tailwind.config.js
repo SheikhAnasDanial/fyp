@@ -2,10 +2,10 @@
 module.exports = {
   darkMode: ["class"],
   content: [
-    './pages/**/*.{ts,tsx}',
-    './components/**/*.{ts,tsx}',
-    './app/**/*.{ts,tsx}',
-    './src/**/*.{ts,tsx}',
+    "./pages/**/*.{ts,tsx}",
+    "./components/**/*.{ts,tsx}",
+    "./app/**/*.{ts,tsx}",
+    "./src/**/*.{ts,tsx}",
   ],
   prefix: "",
   theme: {
@@ -51,6 +51,23 @@ module.exports = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        // Apple-inspired colors
+        apple: {
+          blue: "#0071e3",
+          darkBlue: "#0077ED",
+          gray: {
+            50: "#f5f5f7",
+            100: "#e6e6e6",
+            200: "#d2d2d7",
+            300: "#b8b8c3",
+            400: "#86868b",
+            500: "#6e6e73",
+            600: "#3a3a3c",
+            700: "#2c2c2e",
+            800: "#1c1c1e",
+            900: "#121214",
+          },
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -74,4 +91,4 @@ module.exports = {
     },
   },
   plugins: [require("tailwindcss-animate")],
-}
+};
