@@ -180,41 +180,11 @@ const FavoritesPage = () => {
   };
 
   const toggleTheme = () => {
-    const newTheme = theme === "light" ? "dark" : "light";
-    setTheme(newTheme);
-    // Apply theme to document
-    if (newTheme === "dark") {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-    // Store theme preference
-    localStorage.setItem("theme", newTheme);
+    setTheme(theme === "light" ? "dark" : "light");
   };
 
-  // Initialize theme from localStorage or system preference
-  useEffect(() => {
-    // Check for saved theme preference or use system preference
-    const savedTheme = localStorage.getItem("theme");
-    const systemPrefersDark = window.matchMedia(
-      "(prefers-color-scheme: dark)",
-    ).matches;
-
-    if (savedTheme) {
-      setTheme(savedTheme as "light" | "dark");
-      if (savedTheme === "dark") {
-        document.documentElement.classList.add("dark");
-      } else {
-        document.documentElement.classList.remove("dark");
-      }
-    } else if (systemPrefersDark) {
-      setTheme("dark");
-      document.documentElement.classList.add("dark");
-    }
-  }, []);
-
   return (
-    <div className="bg-background min-h-screen dark-transition">
+    <div className="bg-background min-h-screen">
       <Navbar theme={theme} onThemeToggle={toggleTheme} />
       <div className="container mx-auto py-8 px-4 pt-24">
         <div className="flex items-center justify-between mb-8">
@@ -230,7 +200,6 @@ const FavoritesPage = () => {
             variant="outline"
             size="sm"
             onClick={() => window.history.back()}
-            className="border-apple-blue dark:border-apple-darkBlue text-apple-blue dark:text-apple-darkBlue hover:bg-apple-blue/10 dark:hover:bg-apple-darkBlue/10 dark-transition"
           >
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to Recommendations
@@ -248,7 +217,6 @@ const FavoritesPage = () => {
               </p>
               <Button
                 onClick={() => (window.location.href = "/recommendation")}
-                className="bg-apple-blue hover:bg-apple-darkBlue text-white dark-transition"
               >
                 Browse Recommendations
               </Button>
@@ -258,7 +226,7 @@ const FavoritesPage = () => {
           <>
             {compareMode ? (
               <div className="mb-6">
-                <div className="flex items-center justify-between bg-muted dark:bg-apple-gray-800 p-4 rounded-lg mb-4">
+                <div className="flex items-center justify-between bg-muted p-4 rounded-lg mb-4">
                   <div className="flex items-center">
                     <BarChart2 className="h-5 w-5 mr-2" />
                     <h2 className="text-lg font-medium">Comparison Mode</h2>
@@ -266,12 +234,7 @@ const FavoritesPage = () => {
                       {selectedLaptops.length} selected
                     </Badge>
                   </div>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={exitCompareMode}
-                    className="border-apple-blue dark:border-apple-darkBlue text-apple-blue dark:text-apple-darkBlue hover:bg-apple-blue/10 dark:hover:bg-apple-darkBlue/10 dark-transition"
-                  >
+                  <Button variant="outline" size="sm" onClick={exitCompareMode}>
                     <X className="mr-2 h-4 w-4" />
                     Exit Comparison
                   </Button>
@@ -357,16 +320,10 @@ const FavoritesPage = () => {
                     </Table>
                   </CardContent>
                   <CardFooter className="flex justify-end space-x-2">
-                    <Button
-                      variant="outline"
-                      onClick={exitCompareMode}
-                      className="border-apple-blue dark:border-apple-darkBlue text-apple-blue dark:text-apple-darkBlue hover:bg-apple-blue/10 dark:hover:bg-apple-darkBlue/10 dark-transition"
-                    >
+                    <Button variant="outline" onClick={exitCompareMode}>
                       Cancel
                     </Button>
-                    <Button className="bg-apple-blue hover:bg-apple-darkBlue text-white dark-transition">
-                      Make Final Selection
-                    </Button>
+                    <Button>Make Final Selection</Button>
                   </CardFooter>
                 </Card>
               </div>
@@ -393,7 +350,6 @@ const FavoritesPage = () => {
                         );
                         setCompareMode(true);
                       }}
-                      className="border-apple-blue dark:border-apple-darkBlue text-apple-blue dark:text-apple-darkBlue hover:bg-apple-blue/10 dark:hover:bg-apple-darkBlue/10 dark-transition"
                     >
                       <BarChart2 className="mr-2 h-4 w-4" />
                       Compare Laptops
@@ -416,24 +372,24 @@ const FavoritesPage = () => {
                     <Button
                       variant="outline"
                       size="icon"
-                      className="h-8 w-8 bg-background/80 backdrop-blur-sm dark:bg-apple-gray-800/80"
+                      className="h-8 w-8 bg-background/80 backdrop-blur-sm"
                       onClick={() => toggleSelect(laptop.id)}
                     >
                       <Heart
-                        className={`h-4 w-4 ${laptop.selected ? "fill-apple-blue text-apple-blue dark:fill-apple-darkBlue dark:text-apple-darkBlue" : ""}`}
+                        className={`h-4 w-4 ${laptop.selected ? "fill-primary text-primary" : ""}`}
                       />
                     </Button>
                     <Button
                       variant="outline"
                       size="icon"
-                      className="h-8 w-8 bg-background/80 backdrop-blur-sm dark:bg-apple-gray-800/80"
+                      className="h-8 w-8 bg-background/80 backdrop-blur-sm"
                       onClick={() => removeFromFavorites(laptop.id)}
                     >
                       <X className="h-4 w-4" />
                     </Button>
                   </div>
                   <div
-                    className={`group ${laptop.selected ? "ring-2 ring-apple-blue dark:ring-apple-darkBlue" : ""} rounded-lg overflow-hidden`}
+                    className={`group ${laptop.selected ? "ring-2 ring-primary" : ""} rounded-lg overflow-hidden`}
                   >
                     <LaptopCardComponent
                       id={laptop.id}
