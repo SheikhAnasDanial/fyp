@@ -18,11 +18,12 @@ interface NavbarProps {
 const Navbar = ({ theme = "light", onThemeToggle = () => {} }: NavbarProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [currentTheme, setCurrentTheme] = useState<"light" | "dark">(theme);
   const navigate = useNavigate();
   const location = useLocation();
   const isHomePage = location.pathname === "/";
 
-  // Initialize theme from localStorage or system preference
+  // Initialize theme from localStorage and check login status
   useEffect(() => {
     // Check if user is logged in
     const user = localStorage.getItem("user");
@@ -31,7 +32,34 @@ const Navbar = ({ theme = "light", onThemeToggle = () => {} }: NavbarProps) => {
     } else {
       setIsLoggedIn(false);
     }
+
+    // Get theme from localStorage
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme === "dark" || savedTheme === "light") {
+      setCurrentTheme(savedTheme);
+      // Apply theme to document
+      document.documentElement.classList.toggle("dark", savedTheme === "dark");
+    } else if (
+      window.matchMedia &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches
+    ) {
+      // Use system preference if no saved theme
+      setCurrentTheme("dark");
+      document.documentElement.classList.add("dark");
+      localStorage.setItem("theme", "dark");
+    }
   }, [location]);
+
+  // Handle theme toggle
+  const handleThemeToggle = () => {
+    const newTheme = currentTheme === "dark" ? "light" : "dark";
+    setCurrentTheme(newTheme);
+    document.documentElement.classList.toggle("dark", newTheme === "dark");
+    localStorage.setItem("theme", newTheme);
+    if (onThemeToggle) {
+      onThemeToggle();
+    }
+  };
 
   const handleGetStarted = () => {
     // Check if user is logged in
@@ -138,11 +166,11 @@ const Navbar = ({ theme = "light", onThemeToggle = () => {} }: NavbarProps) => {
             <Button
               variant="ghost"
               size="icon"
-              onClick={onThemeToggle}
+              onClick={handleThemeToggle}
               aria-label="Toggle theme"
               className="text-foreground hover:bg-secondary/80 dark-transition"
             >
-              {theme === "dark" ? (
+              {currentTheme === "dark" ? (
                 <Sun className="h-5 w-5 text-yellow-400" />
               ) : (
                 <Moon className="h-5 w-5" />

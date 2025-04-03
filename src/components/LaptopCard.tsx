@@ -102,9 +102,11 @@ const LaptopCard = ({
           </Tooltip>
         </TooltipProvider>
 
-        <Button className="flex-1" onClick={() => onViewDetails(id)}>
-          <Info className="mr-2 h-4 w-4" />
-          View Details
+        <Button className="flex-1" onClick={() => onViewDetails(id)} asChild>
+          <a href={`/laptop/${id}`}>
+            <Info className="mr-2 h-4 w-4" />
+            View Details
+          </a>
         </Button>
       </CardFooter>
     </Card>
