@@ -173,14 +173,7 @@ const FavoritesPage = () => {
               Compare and review your saved laptop recommendations
             </p>
           </div>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => window.history.back()}
-          >
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to Recommendations
-          </Button>
+          <hr />
         </div>
 
         {favorites.length === 0 ? (
@@ -297,10 +290,6 @@ const FavoritesPage = () => {
                     </Table>
                   </CardContent>
                   <CardFooter className="flex justify-end space-x-2">
-                    <Button variant="outline" onClick={exitCompareMode}>
-                      Cancel
-                    </Button>
-                    <Button>Make Final Selection</Button>
                   </CardFooter>
                 </Card>
               </div>

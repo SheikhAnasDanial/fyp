@@ -494,15 +494,6 @@ const RecommendationPage = () => {
                     </SelectContent>
                   </Select>
                 </div>
-
-                <Button
-                  variant="outline"
-                  onClick={handleGoToFavorites}
-                  className="flex-1 md:flex-none border-apple-blue dark:border-apple-darkBlue text-apple-blue dark:text-apple-darkBlue hover:bg-apple-blue/10 dark:hover:bg-apple-darkBlue/10 dark-transition"
-                >
-                  <Heart className="h-4 w-4 mr-2" />
-                  Favorites
-                </Button>
               </div>
             </div>
 
