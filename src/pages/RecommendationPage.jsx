@@ -54,8 +54,7 @@ const RecommendationPage = () => {
       ram: "16GB",
       storage: "512GB SSD",
       display: '14" Retina XDR',
-      price: 1999,
-      rating: 4.8,
+      price: 6139,
     },
     {
       id: "2",
@@ -67,8 +66,7 @@ const RecommendationPage = () => {
       ram: "16GB",
       storage: "1TB SSD",
       display: '15.6" 4K OLED',
-      price: 1799,
-      rating: 4.6,
+      price: 3700,
     },
     {
       id: "3",
@@ -80,8 +78,7 @@ const RecommendationPage = () => {
       ram: "16GB",
       storage: "512GB SSD",
       display: '13.5" OLED Touch',
-      price: 1399,
-      rating: 4.5,
+      price: 2699,
     },
     {
       id: "4",
@@ -93,8 +90,7 @@ const RecommendationPage = () => {
       ram: "16GB",
       storage: "1TB SSD",
       display: '14" FHD+',
-      price: 1649,
-      rating: 4.7,
+      price: 9799,
     },
     {
       id: "5",
@@ -106,21 +102,19 @@ const RecommendationPage = () => {
       ram: "32GB",
       storage: "1TB SSD",
       display: '14" QHD 120Hz',
-      price: 1799,
-      rating: 4.7,
+      price: 7599,
     },
     {
       id: "6",
       name: "Microsoft Surface Laptop 4",
       brand: "Microsoft",
       image:
-        "https://images.unsplash.com/photo-1625242662167-a1cfa3737f95?w=800&q=80",
+        "https://images.unsplash.com/photo-1595245150809-ef9436aaded6?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8bWljcm9zb2Z0JTIwc3VyZmFjZXxlbnwwfHwwfHx8Mg%3D%3D",
       processor: "AMD Ryzen 7",
       ram: "16GB",
       storage: "512GB SSD",
       display: '13.5" PixelSense',
-      price: 1299,
-      rating: 4.5,
+      price: 8500,
     },
   ]);
 
@@ -247,10 +241,10 @@ const RecommendationPage = () => {
                         <div>
                           <div className="flex justify-between mb-2">
                             <Label>
-                              Price Range (up to ${preferences.budget})
+                              Price Range (up to RM{preferences.budget})
                             </Label>
                             <span className="text-muted-foreground">
-                              ${preferences.budget}
+                              RM{preferences.budget}
                             </span>
                           </div>
                           <SliderComponent
@@ -264,8 +258,8 @@ const RecommendationPage = () => {
                             className="py-4"
                           />
                           <div className="flex justify-between text-xs text-muted-foreground">
-                            <span>$500</span>
-                            <span>$5000</span>
+                            <span>RM500</span>
+                            <span>RM5000</span>
                           </div>
                         </div>
                       </div>
@@ -530,7 +524,6 @@ const RecommendationPage = () => {
                       storage={laptop.storage}
                       display={laptop.display}
                       price={laptop.price}
-                      rating={laptop.rating}
                       onAddToFavorites={handleAddToFavorites}
                       onViewDetails={handleViewDetails}
                     />

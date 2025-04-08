@@ -156,7 +156,7 @@ const Navbar = ({ theme = "light", onThemeToggle = () => {} }) => {
           </div>
 
           {/* Right side actions */}
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-4 md:space-x-4 justify-end ml-auto md:ml-0">
             {/* Theme toggle */}
             <Button
               variant="ghost"
@@ -177,7 +177,7 @@ const Navbar = ({ theme = "light", onThemeToggle = () => {} }) => {
               <Button
                 variant="outline"
                 onClick={handleLogout}
-                className="flex items-center gap-2 border-apple-blue dark:border-apple-darkBlue text-apple-blue dark:text-apple-darkBlue hover:bg-apple-blue/10 dark:hover:bg-apple-darkBlue/10 dark-transition"
+                className="hidden md:flex items-center gap-2 border-apple-blue dark:border-apple-darkBlue text-apple-blue dark:text-apple-darkBlue hover:bg-apple-blue/10 dark:hover:bg-apple-darkBlue/10 dark-transition"
               >
                 <LogOut className="h-4 w-4" />
                 Logout
@@ -186,7 +186,7 @@ const Navbar = ({ theme = "light", onThemeToggle = () => {} }) => {
               // Not logged in actions
               <Button
                 onClick={handleGetStarted}
-                className="bg-apple-blue hover:bg-apple-darkBlue text-white dark-transition"
+                className="hidden md:flex bg-apple-blue hover:bg-apple-darkBlue text-white dark-transition"
               >
                 Get Started / Login
               </Button>

@@ -22,7 +22,7 @@ const SoftwareSuggestionCard = ({
       <CardContent className="p-4 flex-grow">
         <h3 className="text-lg font-semibold mb-2">{name}</h3>
         <p className="text-sm text-muted-foreground mb-2">{description}</p>
-        <div className="text-primary font-bold">${price.toLocaleString()}</div>
+        <div className="text-primary font-bold">RM{price.toLocaleString()}</div>
       </CardContent>
       <CardFooter className="p-4 pt-0">
         <Button asChild variant="outline" className="w-full">

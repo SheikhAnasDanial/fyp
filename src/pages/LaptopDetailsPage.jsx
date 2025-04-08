@@ -246,7 +246,7 @@ const LaptopDetailsPage = () => {
           </div>
 
           <div className="text-2xl font-bold text-primary mb-4">
-            ${laptop.price.toLocaleString()}
+            RM{laptop.price.toLocaleString()}
           </div>
 
           <p className="text-muted-foreground mb-6">{laptop.description}</p>

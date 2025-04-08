@@ -24,10 +24,9 @@ const LaptopCard = ({
   storage = "512GB SSD",
   display = '16" Retina XDR',
   price = 1999.99,
-  rating = 4.8,
   isFavorite = false,
-  onAddToFavorites = () => {},
-  onViewDetails = () => {},
+  onAddToFavorites = () => { },
+  onViewDetails = () => { },
 }) => {
   return (
     <Card className="w-full max-w-[350px] overflow-hidden transition-all duration-300 hover:shadow-lg bg-background">
@@ -38,12 +37,6 @@ const LaptopCard = ({
             alt={name}
             className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
           />
-          {rating && (
-            <div className="absolute right-2 top-2 flex items-center gap-1 rounded-full bg-black/70 px-2 py-1 text-xs text-white">
-              <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
-              <span>{rating}</span>
-            </div>
-          )}
         </div>
       </CardHeader>
       <CardContent className="p-4">
@@ -63,7 +56,7 @@ const LaptopCard = ({
           </Badge>
         </div>
         <div className="text-xl font-bold text-primary">
-          ${price.toLocaleString()}
+          RM{price.toLocaleString()}
         </div>
       </CardContent>
       <CardFooter className="flex justify-between gap-2 p-4 pt-0">
