@@ -204,14 +204,6 @@ const AuthPage = () => {
                       Remember me
                     </label>
                   </div>
-                  <div className="text-sm">
-                    <a
-                      href="#"
-                      className="font-medium text-blue-600 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300"
-                    >
-                      Forgot password?
-                    </a>
-                  </div>
                 </div>
 
                 <Button type="submit" className="w-full">
@@ -321,30 +313,6 @@ const AuthPage = () => {
               </form>
             </TabsContent>
           </Tabs>
-
-          <div className="p-6 border-t border-gray-200 dark:border-gray-700">
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-300 dark:border-gray-600"></div>
-              </div>
-              <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400">
-                  Or continue with
-                </span>
-              </div>
-            </div>
-
-            <div className="mt-6 grid grid-cols-2 gap-3">
-              <Button variant="outline" className="w-full">
-                <Github className="mr-2 h-4 w-4" />
-                Github
-              </Button>
-              <Button variant="outline" className="w-full">
-                <Twitter className="mr-2 h-4 w-4" />
-                Twitter
-              </Button>
-            </div>
-          </div>
         </div>
 
         <p className="mt-6 text-center text-sm text-gray-500 dark:text-gray-400">

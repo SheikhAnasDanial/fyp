@@ -23,7 +23,7 @@ import Navbar from "@/components/Navbar";
 
 const RecommendationPage = () => {
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState("preferences");
+  const [activeTab, setActiveTab] = useState("results");
   const [searchQuery, setSearchQuery] = useState("");
   const [filterBrand, setFilterBrand] = useState("all");
   const [theme, setTheme] = useState("light");
@@ -204,19 +204,19 @@ const RecommendationPage = () => {
         </motion.div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-2 mb-8 bg-secondary/50 dark:bg-secondary/30">
+          <TabsList className="grid w-full grid-cols-4 mb-8 bg-secondary/50 dark:bg-secondary/30">
             <TabsTrigger
               value="preferences"
-              className="text-lg py-3 data-[state=active]:bg-apple-blue data-[state=active]:text-white dark:data-[state=active]:bg-apple-darkBlue"
+              className="col-span-1 text-lg py-3 data-[state=active]:bg-apple-blue data-[state=active]:text-white dark:data-[state=active]:bg-apple-darkBlue"
             >
               <div className="flex items-center gap-2">
                 <SlidersHorizontal className="h-5 w-5" />
-                <span>Preferences</span>
+                <span>Filter</span>
               </div>
             </TabsTrigger>
             <TabsTrigger
               value="results"
-              className="text-lg py-3 data-[state=active]:bg-apple-blue data-[state=active]:text-white dark:data-[state=active]:bg-apple-darkBlue"
+              className="col-span-3 text-lg py-3 data-[state=active]:bg-apple-blue data-[state=active]:text-white dark:data-[state=active]:bg-apple-darkBlue"
             >
               <div className="flex items-center gap-2">
                 <Laptop className="h-5 w-5" />

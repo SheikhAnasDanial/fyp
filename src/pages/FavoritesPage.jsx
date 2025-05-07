@@ -282,7 +282,7 @@ const FavoritesPage = () => {
                           <TableCell className="font-medium">Price</TableCell>
                           {selectedLaptops.map((laptop) => (
                             <TableCell key={`${laptop.id}-price`}>
-                              ${laptop.price.toLocaleString()}
+                              RM{laptop.price.toLocaleString()}
                             </TableCell>
                           ))}
                         </TableRow>
